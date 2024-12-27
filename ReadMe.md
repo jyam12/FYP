@@ -2,6 +2,11 @@
 ```
 pipenv install -dev
 ```
+
+# Add package
+```
+pipenv install xxxx
+```
 # To get datasets
 1. Activate the pipenv shell
 `pipenv shell`
