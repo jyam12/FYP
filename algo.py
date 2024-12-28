@@ -33,7 +33,7 @@ test_data = data.iloc[split_index:].copy()
 
 # Calculate thresholds from training data
 avg_spread = training_data["spread"].mean()
-imbalance_high = 0.6
+imbalance_high = 0.75
 imbalance_low = 0.4
 
 # Define prediction rules to calculate the next price and signals
@@ -46,11 +46,11 @@ def predict_next_price_and_signal(row, current_price):
         signal = "stable"
     # Rule 2: High bid volume imbalance (upward movement)
     elif row["volume_imbalance"] > imbalance_high:
-        delta_price = row["spread"] * 0.5  # Fraction of spread for upward movement
+        delta_price = row["spread"] * 0.2  # Fraction of spread for upward movement
         signal = "up"
     # Rule 3: High ask volume imbalance (downward movement)
     elif row["volume_imbalance"] < imbalance_low:
-        delta_price = -row["spread"] * 0.5  # Fraction of spread for downward movement
+        delta_price = -row["spread"] * 0.2  # Fraction of spread for downward movement
         signal = "down"
     # Rule 4: Add momentum
     if pd.notnull(row["momentum"]):  # Add momentum effect
