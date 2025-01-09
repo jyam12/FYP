@@ -14,5 +14,6 @@ def generate_actual_label():
     Processed_Dataset['Price Movement'] = Processed_Dataset["mark_price"].diff().apply(lambda x: 'Up' if x > 0 else 'Down' if x < 0 else 'Stable')
 
 generate_actual_label()
-
 Processed_Dataset.to_csv('./datasets/Processed_Dataset_adding_priceMovementLabel.csv', index=False)
+
+

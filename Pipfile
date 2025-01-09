@@ -8,6 +8,8 @@ pandas = "*"
 tardis-dev = "*"
 matplotlib = "*"
 seaborn = "*"
+scikit-learn = "*"
+joblib = "*"
 
 [dev-packages]
 jupyter = "*"

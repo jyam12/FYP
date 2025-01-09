@@ -1,9 +1,9 @@
 import pandas as pd
-import matplotlib.pyplot as plt
-from sklearn.metrics import mean_squared_error
+# import matplotlib.pyplot as plt
+# from sklearn.metrics import mean_squared_error
 
 # Load the dataset
-file_path = "datasets/test.csv"  # Replace with the path to your CSV file
+file_path = "datasets/Processed_Dataset_adding_priceMovementLabel.csv"  # Replace with the path to your CSV file
 data = pd.read_csv(file_path)
 
 # Parse and preprocess relevant columns for all levels
@@ -62,34 +62,36 @@ test_data["momentum"] = test_data["mark_price"].diff()
 
 # Initialize predicted price with the first actual mark price and create signal column
 test_data["predicted_price"] = None
-test_data["signal"] = None
+test_data["predict_signal"] = None
 test_data.iloc[0, test_data.columns.get_loc("predicted_price")] = test_data.iloc[0]["mark_price"]
 
 # Calculate predicted prices and signals iteratively
-for i in range(1, len(test_data)):
-    current_price = test_data.iloc[i - 1]["predicted_price"]
-    predicted_price, signal = predict_next_price_and_signal(test_data.iloc[i], current_price)
-    test_data.iloc[i, test_data.columns.get_loc("predicted_price")] = predicted_price
-    test_data.iloc[i, test_data.columns.get_loc("signal")] = signal
+def Heuristic_Predict():
+    for i in range(1, len(test_data)):
+        current_price = test_data.iloc[i - 1]["predicted_price"]
+        predicted_price, signal = predict_next_price_and_signal(test_data.iloc[i], current_price)
+        test_data.iloc[i, test_data.columns.get_loc("predicted_price")] = predicted_price
+        test_data.iloc[i, test_data.columns.get_loc("predict_signal")] = signal
+    return test_data
 
-# Evaluate performance (Mean Squared Error) based on mark price
-mse = mean_squared_error(test_data["mark_price"], test_data["predicted_price"])
-print(f"Mean Squared Error: {mse:.2f}")
+# # Evaluate performance (Mean Squared Error) based on mark price
+# mse = mean_squared_error(test_data["mark_price"], test_data["predicted_price"])
+# print(f"Mean Squared Error: {mse:.2f}")
 
-# Visualize the actual vs. predicted price along with signals
-plt.figure(figsize=(12, 6))
-plt.plot(test_data["mark_price"], label="Actual Price (Mark Price)", color="blue")
-plt.plot(test_data["predicted_price"], label="Predicted Price", color="orange", linestyle="--")
-plt.title("Actual vs Predicted Prices with Signals")
-plt.xlabel("Index")
-plt.ylabel("Price")
-plt.legend()
-plt.grid()
-plt.show()
+# # Visualize the actual vs. predicted price along with signals
+# plt.figure(figsize=(12, 6))
+# plt.plot(test_data["mark_price"], label="Actual Price (Mark Price)", color="blue")
+# plt.plot(test_data["predicted_price"], label="Predicted Price", color="orange", linestyle="--")
+# plt.title("Actual vs Predicted Prices with Signals")
+# plt.xlabel("Index")
+# plt.ylabel("Price")
+# plt.legend()
+# plt.grid()
+# plt.show()
 
-# Add signal distribution visualization
-signal_counts = test_data["signal"].value_counts()
-signal_counts.plot(kind='bar', title="Signal Distribution", color=["blue", "orange", "green"])
-plt.xlabel("Signals")
-plt.ylabel("Frequency")
-plt.show()
+# # Add signal distribution visualization
+# signal_counts = test_data["signal"].value_counts()
+# signal_counts.plot(kind='bar', title="Signal Distribution", color=["blue", "orange", "green"])
+# plt.xlabel("Signals")
+# plt.ylabel("Frequency")
+# plt.show()
