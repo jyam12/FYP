@@ -21,12 +21,11 @@ class GradientBoosting:
         param_grid = {
             # Key parameters for price movement prediction
             'n_estimators': [100, 200, 500, 1000],
-            'learning_rate': [0.01, 0.05, 0.1, 0.2],
+            'learning_rate': [0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5],
             'max_depth': range(3, 12, 2),
-            'min_samples_split': range(2, 12, 2),
-            'min_samples_leaf': range(2, 12, 2),
+            'min_samples_split': range(1356, 2074, 10),
+            'min_samples_leaf': range(3, 9),
             'subsample': [0.8, 0.9, 1.0],
-            'max_features': ['auto', 'sqrt', 'log2']
         }
 
         # Configure HalvingGridSearchCV
@@ -49,17 +48,18 @@ class GradientBoosting:
     # Train Linear Regression model
     def train(self):
         GB_model = GradientBoostingRegressor(
-                    n_estimators=100,     # number of boosting stages
-                    learning_rate=0.1,    # learning rate shrinks the contribution of each tree
-                    max_depth=5,          # maximum depth of individual regression estimators
-                    min_samples_split=1555,  # minimum samples required to split internal node
-                    min_samples_leaf=5,   # minimum samples required to be at a leaf node
-                    random_state=42
+                    n_estimators=1000,     # number of boosting stages
+                    learning_rate=0.3,    # learning rate shrinks the contribution of each tree
+                    max_depth=9,          # maximum depth of individual regression estimators
+                    min_samples_split=1926,  # minimum samples required to split internal node
+                    min_samples_leaf=7,   # minimum samples required to be at a leaf node
+                    subsample=0.9
+                    # random_state=42
                 )
         GB_model.fit(self.X_train, self.y_train)
         # Save the models
-        joblib.dump(GB_model, "ML/GB_model_test.pkl") 
+        joblib.dump(GB_model, "ML/GB_model.pkl") 
 
     def predict(self):
-        GB_model = joblib.load("ML/GB_model_test.pkl")
+        GB_model = joblib.load("ML/GB_model.pkl")
         return GB_model.predict(self.X_eval)
