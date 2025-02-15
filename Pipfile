@@ -10,6 +10,7 @@ matplotlib = "*"
 seaborn = "*"
 scikit-learn = "*"
 joblib = "*"
+tensorflow = "*"
 
 [dev-packages]
 jupyter = "*"

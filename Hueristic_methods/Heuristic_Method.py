@@ -88,7 +88,7 @@ class hueristic_Method:
         self.X_eval.iloc[0, self.X_eval.columns.get_loc("predicted_heuristic")] = predicted_price
         self.X_eval.iloc[0, self.X_eval.columns.get_loc("predicted_direction_heuristic")] = signal
         for i in range(1,len(self.X_eval)):
-            current_price = self.X_eval.iloc[i - 1]["predicted_heuristic"]
+            current_price = self.X_eval.iloc[i - 1]["mark_price"]
             predicted_price, signal = self.predict_next_price_and_signal(self.X_eval.iloc[i], current_price)
             self.X_eval.iloc[i, self.X_eval.columns.get_loc("predicted_heuristic")] = predicted_price
             self.X_eval.iloc[i, self.X_eval.columns.get_loc("predicted_direction_heuristic")] = signal

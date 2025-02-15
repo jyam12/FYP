@@ -5,7 +5,7 @@ import seaborn as sns
 
 
 # Specify the path to the CSV file
-Processed_Dataset_path = './datasets/PreProcessed_Dataset.csv'
+Processed_Dataset_path = './datasets/Pre_Processed_Dataset.csv'
 
 # Read the compressed CSV file using pandas
 Processed_Dataset = pd.read_csv(Processed_Dataset_path)
