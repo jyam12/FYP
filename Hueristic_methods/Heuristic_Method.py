@@ -14,8 +14,12 @@ class hueristic_Method:
         self.levels=levels
         self.X_train = X_train.copy(deep=True)
         self.X_eval=X_eval.copy(deep=True)
-        self.imbalance_high = 0.75
-        self.imbalance_low = 0.4
+
+        # hyper parameter
+        # self.imbalance_high = 0.75
+        # self.imbalance_low = 0.4
+        # self.fraction_spread_upward=0.2
+        # self.fraction_spread_downward=0.2
 
         self.bid_columns = [f"bids[{i}].price" for i in range(levels)] + [f"bids[{i}].amount" for i in range(levels)]
         self.ask_columns = [f"asks[{i}].price" for i in range(levels)] + [f"asks[{i}].amount" for i in range(levels)]
@@ -36,9 +40,14 @@ class hueristic_Method:
         # # Calculate spread using VWAPs
         # self.X_eval["spread"] = self.X_eval["VWAP_ask"] - self.X_eval["VWAP_bid"]
 
-
+    # hyper parameter
+    imbalance_high = 0.6
+    imbalance_low = 0.4
+    fraction_spread_upward=0.2
+    fraction_spread_downward=0.2
     # Define prediction rules to calculate the next price and signals
-    def predict_next_price_and_signal(self,row,current_price):
+    def predict_next_price_and_signal(self,row,current_price, imbalance_high,imbalance_low, 
+                                      fraction_spread_upward, fraction_spread_downward):
         delta_price = 0
         signal = "stable"
         # Rule 1: Narrow spread means stable prices
@@ -46,12 +55,12 @@ class hueristic_Method:
             delta_price = 0  # Stable
             signal = 0.0
         # Rule 2: High bid volume imbalance (upward movement)
-        elif row["volume_imbalance"] > self.imbalance_high:
-            delta_price = row["spread"] * 0.2  # Fraction of spread for upward movement
+        elif row["volume_imbalance"] > imbalance_high:
+            delta_price = row["spread"] * fraction_spread_upward  # Fraction of spread for upward movement
             signal = 1.0
         # Rule 3: High ask volume imbalance (downward movement)
-        elif row["volume_imbalance"] < self.imbalance_low:
-            delta_price = -row["spread"] * 0.2  # Fraction of spread for downward movement
+        elif row["volume_imbalance"] < imbalance_low:
+            delta_price = -row["spread"] * fraction_spread_downward  # Fraction of spread for downward movement
             signal = -1.0
         # Rule 4: Add momentum
         if pd.notnull(row["momentum"]):  # Add momentum effect
@@ -64,8 +73,9 @@ class hueristic_Method:
     # test_data.iloc[0, test_data.columns.get_loc("predicted_price")] = test_data.iloc[0]["mark_price"]
 
     # Calculate predicted prices and signals iteratively
-    def predict(self):
-
+    def predict(self,imbalance_high=imbalance_high, imbalance_low=imbalance_low, 
+                                      fraction_spread_upward=fraction_spread_upward, 
+                                      fraction_spread_downward=fraction_spread_downward):
         self.X_eval["VWAP_bid"] = sum(self.X_eval[f"bids[{i}].price"] * self.X_eval[f"bids[{i}].amount"] for i in range(self.levels)) / sum(
             self.X_eval[f"bids[{i}].amount"] for i in range(self.levels))
         self.X_eval["VWAP_ask"] = sum(self.X_eval[f"asks[{i}].price"] * self.X_eval[f"asks[{i}].amount"] for i in range(self.levels)) / sum(
@@ -84,12 +94,12 @@ class hueristic_Method:
         self.X_eval["predicted_direction_heuristic"] = None
 
         current_price= self.X_eval.iloc[0]["mark_price"]
-        predicted_price, signal = self.predict_next_price_and_signal(self.X_eval.iloc[0], current_price)
+        predicted_price, signal = self.predict_next_price_and_signal(self.X_eval.iloc[0], current_price, imbalance_high,imbalance_low,fraction_spread_upward,fraction_spread_downward)
         self.X_eval.iloc[0, self.X_eval.columns.get_loc("predicted_heuristic")] = predicted_price
         self.X_eval.iloc[0, self.X_eval.columns.get_loc("predicted_direction_heuristic")] = signal
         for i in range(1,len(self.X_eval)):
             current_price = self.X_eval.iloc[i - 1]["mark_price"]
-            predicted_price, signal = self.predict_next_price_and_signal(self.X_eval.iloc[i], current_price)
+            predicted_price, signal = self.predict_next_price_and_signal(self.X_eval.iloc[i], current_price, imbalance_high,imbalance_low,fraction_spread_upward,fraction_spread_downward)
             self.X_eval.iloc[i, self.X_eval.columns.get_loc("predicted_heuristic")] = predicted_price
             self.X_eval.iloc[i, self.X_eval.columns.get_loc("predicted_direction_heuristic")] = signal
 
