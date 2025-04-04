@@ -12,7 +12,8 @@ class adaboost:
 
     # Train AdaBoost Regressor
     def train(self):
-        adaboost_model = AdaBoostRegressor(n_estimators=50, random_state=42)
+        # adaboost_model = AdaBoostRegressor(n_estimators=50, random_state=42)
+        adaboost_model = AdaBoostRegressor()
         adaboost_model.fit(self.X_train, self.y_train)
         # Save the models
         joblib.dump(adaboost_model, "ML/adaboost_model.pkl") 
