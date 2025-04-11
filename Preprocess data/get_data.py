@@ -25,11 +25,12 @@ datasets.download(
     exchange="deribit",
     # accepted data types - 'datasets.symbols[].dataTypes' field in https://api.tardis.dev/v1/exchanges/deribit,
     # or get those values from 'deribit_details["datasets"]["symbols][]["dataTypes"] dict above
-    data_types=["incremental_book_L2", "trades", "quotes", "derivative_ticker", "book_snapshot_25", "book_snapshot_5", "liquidations"],
+    # data_types=["incremental_book_L2", "trades", "quotes", "derivative_ticker", "book_snapshot_25", "book_snapshot_5", "liquidations"],
+    data_types=["derivative_ticker","book_snapshot_5"],
     # change date ranges as needed to fetch full month or year for example
-    from_date="2024-09-01",
+    from_date="2024-10-01",
     # to date is non inclusive
-    to_date="2024-09-02",
+    to_date="2024-10-02",
     # accepted values: 'datasets.symbols[].id' field in https://api.tardis.dev/v1/exchanges/deribit
     symbols=["BTC-PERPETUAL"],
     # (optional) your API key to get access to non sample data as well

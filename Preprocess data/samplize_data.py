@@ -7,6 +7,10 @@ import numpy as np
 book_snapshot_5_path = '.datasets/deribit_book_snapshot_5_2024-09-01_BTC-PERPETUAL.csv.gz'
 derivative_ticker_path = '.datasets/deribit_derivative_ticker_2024-09-01_BTC-PERPETUAL.csv.gz'
 
+# for simulation dataset
+# book_snapshot_5_path = './datasets/deribit_book_snapshot_5_2024-10-01_BTC-PERPETUAL.csv.gz'
+# derivative_ticker_path = './datasets/deribit_derivative_ticker_2024-10-01_BTC-PERPETUAL.csv.gz'
+
 # Read the compressed CSV file using pandas
 book_snapshot_5 = pd.read_csv(book_snapshot_5_path, compression='gzip')
 derivative_ticker= pd.read_csv(derivative_ticker_path, compression='gzip')
@@ -79,4 +83,7 @@ for idx in P_data.index:
 
 P_data['DT_timestamp'] = P_data['DT_timestamp'].astype('int64')
 P_data['BS5_timestamp'] = P_data['BS5_timestamp'].astype('int64')
+
 P_data.to_csv('./datasets/Samplized_Dataset.csv', index=False)
+# P_data.to_csv('./datasets/Sim_Samplized_Dataset.csv', index=False)
+

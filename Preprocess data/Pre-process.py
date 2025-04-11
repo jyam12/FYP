@@ -2,7 +2,8 @@ import pandas as pd
 import numpy as np
 
 # Specify the path to the CSV file
-Processed_Dataset_path = './datasets/Samplized_Dataset.csv'
+# Processed_Dataset_path = './datasets/Samplized_Dataset.csv'
+Processed_Dataset_path = './datasets/Sim_Samplized_Dataset.csv'
 
 
 # Read the compressed CSV file using pandas
@@ -32,6 +33,7 @@ def gerenrate_actual_direction():
 
 gerenrate_actual_direction()
 
-Processed_Dataset.to_csv('./datasets/Pre_Processed_Dataset.csv', index=False)
+# Processed_Dataset.to_csv('./datasets/Pre_Processed_Dataset.csv', index=False)
+Processed_Dataset.to_csv('./datasets/Sim_Pre_Processed_Dataset.csv', index=False)
 
 
