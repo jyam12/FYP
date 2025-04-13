@@ -11,9 +11,11 @@ seaborn = "*"
 scikit-learn = "*"
 joblib = "*"
 tensorflow = "*"
+torch = "*"
 
 [dev-packages]
 jupyter = "*"
+torch-tb-profiler = "*"
 
 [requires]
 python_version = "3.12"

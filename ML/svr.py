@@ -12,7 +12,7 @@ class svr:
 
     # Train Linear Regression model
     def train(self):
-        svr_model = SVR(kernel='rbf', )
+        svr_model = SVR(kernel='linear', )
         svr_model.fit(self.X_train, self.y_train)
         # Save the models
         joblib.dump(svr_model, "ML/svr_model.pkl") 
